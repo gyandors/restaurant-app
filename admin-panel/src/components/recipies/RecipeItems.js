@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
-import { categoriesContext } from "../../context/admin-context";
-import CategoriesForm from "./CategoriesForm";
+import RecipiesForm from "./RecipiesForm";
+import { recipiesContext } from "../../context/admin-context";
 
 export default function CategoryItems(props) {
   const [isEditing, setIsEditing] = useState(false);
-  const catCtx = useContext(categoriesContext);
+  const recCtx = useContext(recipiesContext);
 
   async function handleEdit() {
     setIsEditing(true);
@@ -12,13 +12,13 @@ export default function CategoryItems(props) {
 
   async function handleDelete() {
     const response = await fetch(
-      `https://restaurant-app-17-default-rtdb.firebaseio.com/admin/categories/${props.id}.json`,
+      `https://restaurant-app-17-default-rtdb.firebaseio.com/admin/recipies/${props.id}.json`,
       {
         method: "DELETE",
       }
     );
     if (response.ok) {
-      catCtx.onDeleteCategories(props.id);
+      recCtx.onDeleteRecipies(props.id);
     }
   }
 
@@ -30,8 +30,12 @@ export default function CategoryItems(props) {
         alt="Category pic"
       />
       <div className="flex-1">
-        <h1 className="font-medium">{props.name}</h1>
-        <p className="text-sm">{props.description}</p>
+        <h1 className="font-medium">
+          {props.name}
+          <span className="text-red-500"> ₹{props.price}</span>
+        </h1>
+        <p className="text-sm">{props.category}</p>
+        <i>{props.ingredients}</i>
       </div>
       <div>
         <button
@@ -48,11 +52,13 @@ export default function CategoryItems(props) {
         </button>
       </div>
       {isEditing && (
-        <CategoriesForm
+        <RecipiesForm
           editing={isEditing}
           id={props.id}
           name={props.name}
-          description={props.description}
+          category={props.category}
+          ingredients={props.ingredients}
+          price={props.price}
           image={props.image}
           onCloseForm={() => setIsEditing(false)}
         />

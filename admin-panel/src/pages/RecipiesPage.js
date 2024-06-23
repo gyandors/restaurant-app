@@ -1,7 +1,5 @@
+import Recipies from "../components/recipies/Recipies";
+
 export default function RecipiesPage() {
-  return (
-    <div>
-      <h1>Recipies Page</h1>
-    </div>
-  );
+  return <Recipies />;
 }
